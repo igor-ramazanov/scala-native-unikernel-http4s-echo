@@ -1,0 +1,26 @@
+name: ci
+
+on: push
+
+concurrency:
+  group: ${{ github.ref }}_ci
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@main
+      - name: Build binaries
+        run: nix develop --command sbt nativeLink
+      - uses: actions/upload-artifact@v4
+        with:
+          path: |
+            target/scala-3.6.3/unikernel-scala-out
+          compression-level: 9
+          overwrite: true
+
