@@ -29,21 +29,21 @@ and erased when you `cd` out of the repository directory.
 
 ## Usage
 
-Build the binary: `sbt nativeLink`. \
+Build the binary: `sbt nativeLink`.\
 
-Now, let's use the `ops` command to run it as a QEMU virtual machine packaged as unikernel. \
+Now, let's use the `ops` command to run it as a QEMU virtual machine packaged as unikernel.\
 It binds to the port 80, so we'll need `sudo`: `sudo ops run --port 80 ./target/scala-3.6.3/unikernel-scala-out`.
 
 
-In another terminal window: `curl localhost`. \
+In another terminal window: `curl localhost`.\
 Output:
 ```
 Hello from Scala Native NanoVM Unikernel! Your request: Request(method=GET, uri=/, httpVersion=HTTP/1.1, headers=Headers(Host: localhost, User-Agent: curl/8.11.0, Accept: */*), entity=Entity.Empty)
 ```
 
-Packaging: `ops build ./target/scala-3.6.3/unikernel-scala-out`. \
+Packaging: `ops build ./target/scala-3.6.3/unikernel-scala-out`.\
 
-Verify the image created: `ops image list`. \
+Verify the image created: `ops image list`.\
 Output:
 ```
 100% |████████████████████████████████████████|  [0s:0s]
@@ -51,7 +51,7 @@ Output:
 Bootable image file:/home/igor/.ops/images/unikernel-scala-out.img
 ```
 
-The resulting image then can be deployed to any cloud hypervisor which uses QEMU, e.g. [DigitalOcean](https://digitalocean.com).: \
+The resulting image then can be deployed to any cloud hypervisor which uses QEMU, e.g. [DigitalOcean](https://digitalocean.com).:\
 1. "Create Droplet".
 2. "Choose Image" -> "Custom Images".
 3. "Add Image".
