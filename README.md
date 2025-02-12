@@ -20,7 +20,15 @@ The Nix sets up the development environment with:
 
 The `build.sbt` points to `clang` binaries provided by the `devshell`.
 
-You can use this repo without `nix` if all of the above provided by your own environment (but will need to update the [`build.sbt`](./build.sbt)).
+
+## TODOs
+- [ ] non-Nix friendly.
+- [ ] build and package with Nix Flakes.
+- [ ] automatically build and publish the ELF and the unikernel image.
+- [ ] continuous deployment to DigitalOcean.
+
+## Note on Nix
+You can use this repo without `nix` if all of the above provided by your own environment, but you will need to update the [`build.sbt`](./build.sbt).
 
 As for `nix` users, `cd` into the repository directory and run `nix develop` to drop into the development environment.\
 Or, if you have `direnv` installed, simply `cd` into the repository directory and do `direnv allow`.\
@@ -29,21 +37,26 @@ and erased when you `cd` out of the repository directory.
 
 ## Usage
 
-Build the binary: `sbt nativeLink`.\
+Build the binary:\
+`sbt nativeLink`.
 
 Now, let's use the `ops` command to run it as a QEMU virtual machine packaged as unikernel.\
-It binds to the port 80, so we'll need `sudo`: `sudo ops run --port 80 ./target/scala-3.6.3/unikernel-scala-out`.
+It binds to the port 80, so we'll need `sudo`:\
+`sudo ops run --port 80 ./target/scala-3.6.3/unikernel-scala-out`.
 
 
-In another terminal window: `curl localhost`.\
+In another terminal window:\
+`curl localhost`.\
 Output:
 ```
 Hello from Scala Native NanoVM Unikernel! Your request: Request(method=GET, uri=/, httpVersion=HTTP/1.1, headers=Headers(Host: localhost, User-Agent: curl/8.11.0, Accept: */*), entity=Entity.Empty)
 ```
 
-Packaging: `ops build ./target/scala-3.6.3/unikernel-scala-out`.\
+Packaging:\
+`ops build ./target/scala-3.6.3/unikernel-scala-out`.
 
-Verify the image created: `ops image list`.\
+Verify the image created:\
+`ops image list`.\
 Output:
 ```
 100% |████████████████████████████████████████|  [0s:0s]
@@ -51,7 +64,7 @@ Output:
 Bootable image file:/home/igor/.ops/images/unikernel-scala-out.img
 ```
 
-The resulting image then can be deployed to any cloud hypervisor which uses QEMU, e.g. [DigitalOcean](https://digitalocean.com).:\
+The resulting image then can be deployed to any cloud hypervisor which uses QEMU, e.g. [DigitalOcean](https://digitalocean.com).:
 1. "Create Droplet".
 2. "Choose Image" -> "Custom Images".
 3. "Add Image".
@@ -59,7 +72,7 @@ The resulting image then can be deployed to any cloud hypervisor which uses QEMU
 5. Wait for uploading the image and verification.
 6. On your image: "More" -> "Start Droplet".
 
-The app is currently deployed as `http://unikernel.igorramazanov.tech`:
+The app is currently deployed as [`http://unikernel.igorramazanov.tech`](http://unikernel.igorramazanov.tech) (you can simply open it in the browser):
 ```
 curl -v http://unikernel.igorramazanov.tech
 
@@ -93,8 +106,3 @@ instead of the traditional approach with [`coursier/setup-action`](https://githu
 1. https://github.com/DeterminateSystems/flake-checker-action
 1. https://github.com/DeterminateSystems/magic-nix-cache-action
 
-## TODOs
-- [ ] non-Nix friendly.
-- [ ] build and package with Nix Flakes.
-- [ ] automatically build and publish the ELF and the unikernel image.
-- [ ] continuous deployment to DigitalOcean.
