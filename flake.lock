@@ -22,9 +22,7 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": [
-          "systems"
-        ]
+        "systems": "systems"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -60,8 +58,30 @@
         "devshell": "devshell",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
-        "systems": "systems",
-        "typelevel-nix": "typelevel-nix"
+        "sbt-derivation": "sbt-derivation"
+      }
+    },
+    "sbt-derivation": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1698464090,
+        "narHash": "sha256-Pnej7WZIPomYWg8f/CZ65sfW85IfIUjYhphMMg7/LT0=",
+        "owner": "zaninime",
+        "repo": "sbt-derivation",
+        "rev": "6762cf2c31de50efd9ff905cbcc87239995a4ef9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zaninime",
+        "repo": "sbt-derivation",
+        "type": "github"
       }
     },
     "systems": {
@@ -76,32 +96,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "typelevel-nix": {
-      "inputs": {
-        "devshell": [
-          "devshell"
-        ],
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1739196421,
-        "narHash": "sha256-X2fSn7GMN5vxD31BM1MjrS2yU+N2rdEAw5xl+ufYiS8=",
-        "owner": "typelevel",
-        "repo": "typelevel-nix",
-        "rev": "ed6c1bd47cb62d1169395afdce8d67e62f4366d5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "typelevel",
-        "repo": "typelevel-nix",
         "type": "github"
       }
     }

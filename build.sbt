@@ -38,18 +38,11 @@ addCommandsAlias(
 
 addCommandsAlias("massage", List("scalafixAll", "scalafmtSbt", "scalafmtAll", "Test/compile"))
 
-/** @todo Make friendly for non-nix folks. */
-lazy val dirs = new {
-  val bin      = file(sys.env("DEVSHELL_DIR")) / "bin"
-  val includes = file(sys.env("C_INCLUDE_PATH"))
-  val lib      = file(sys.env("LIBRARY_PATH"))
-}
-
 lazy val `unikernel-scala` = project
   .in(file("."))
   .enablePlugins(ScalaNativePlugin, BindgenPlugin)
   .settings(
-    version           := "0.0.1",
+    version           := java.nio.file.Files.readString(file("version").toPath()),
     organization      := "tech.igorramazanov.unikernel.scala",
     scalacOptions     :=
       List("-deprecation", "-feature", "-new-syntax", "-rewrite", "-unchecked", "-Wall", "-Wunused:imports"),
@@ -60,24 +53,14 @@ lazy val `unikernel-scala` = project
     Compile / fork    := true,
     logLevel          := Level.Info,
     nativeConfig ~=
-      (config =>
-        config
-          .withBuildTarget(BuildTarget.application)
+      (c =>
+        // The rest is managed through env vars, check flake.nix
+        c.withBuildTarget(BuildTarget.application)
           .withCheckFatalWarnings(true)
           .withCheck(true)
-          .withClang((dirs.bin / "clang").toPath())
-          .withClangPP((dirs.bin / "clang++").toPath())
-          // TODO: Make friendly for non-nix folks.
-          .withCompileOptions(config.compileOptions :+ s"-I${dirs.includes}")
           .withEmbedResources(false)
-          .withGC(GC.immix)
           .withIncrementalCompilation(true)
-          // TODO: Make friendly for non-nix folks.
-          .withLinkingOptions(config.linkingOptions :+ s"${dirs.lib}/liburing.a" :+ s"${dirs.lib}/libcrypto.a")
           .withLinkStubs(true)
-          .withLTO(LTO.full)
-          .withMode(Mode.releaseFast)
-          .withOptimize(true)
       ),
     libraryDependencies ++= List(
       "co.fs2"        %%% "fs2-core"            % versions.fs2,
