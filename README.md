@@ -107,3 +107,28 @@ instead of the traditional approach with [`coursier/setup-action`](https://githu
 1. https://github.com/DeterminateSystems/flake-checker-action
 1. https://github.com/DeterminateSystems/magic-nix-cache-action
 
+
+## Debugging
+Add `--verbose` and `--show-debug` flags to the `ops run ./target/scala-3.6.3/unikernel-scala-out` to see the `qemu` command:
+```
+qemu-system-x86_64 \
+  -machine q35 \
+  -device pcie-root-port,port=0x10,chassis=1,id=pci.1,bus=pcie.0,multifunction=on,addr=0x3 \
+  -device pcie-root-port,port=0x11,chassis=2,id=pci.2,bus=pcie.0,addr=0x3.0x1 \
+  -device pcie-root-port,port=0x12,chassis=3,id=pci.3,bus=pcie.0,addr=0x3.0x2 \
+  -device virtio-scsi-pci,bus=pci.2,addr=0x0,id=scsi0 \
+  -device scsi-hd,bus=scsi0.0,drive=hd0 \
+  -vga none \
+  -smp 1 \
+  -device isa-debug-exit -m 2G \
+  -device virtio-rng-pci \
+  -machine accel=kvm:tcg \
+  -cpu host \
+  -no-reboot \
+  -cpu max \
+  -drive file=/root/.ops/images/unikernel-scala-out.img,format=raw,if=none,id=hd0 \
+  -device virtio-net,bus=pci.3,addr=0x0,netdev=n0,mac=3e:bd:d3:d8:e0:3f \
+  -netdev user,id=n0,hostfwd=tcp::8080-:80 \
+  -display none \
+  -serial stdio
+```
