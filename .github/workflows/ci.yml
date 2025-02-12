@@ -15,12 +15,15 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
       - uses: DeterminateSystems/flake-checker-action@main
-      - name: Build binaries
+      - name: Build ELF
         run: nix develop --command sbt nativeLink
+      - name: Build Unikernel
+        run: nix develop --command ops build ./target/scala-3.6.3/unikernel-scala-out
       - uses: actions/upload-artifact@v4
         with:
           path: |
             target/scala-3.6.3/unikernel-scala-out
+            ~/.ops/images/unikernel-scala-out.img
           compression-level: 9
           overwrite: true
 
