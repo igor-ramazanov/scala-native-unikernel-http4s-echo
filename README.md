@@ -18,18 +18,18 @@ The Nix sets up the development environment with:
 1. `ops`: NanoVM Unikernel build tool: https://github.com/nanovms/ops
 1. `qemu`: QEMU hypervisor: https://www.qemu.org
 
-The `build.sbt` points to `clang` binaries provided by the `devshell`.
-
-
 ## TODOs
 - [ ] Static ELF.
-- [ ] Non-Nix friendly.
+- [x] Non-Nix friendly.
 - [ ] Build and package with Nix Flakes.
+    * Running `ops` in `stdenv` is broken at the moment: https://github.com/nanovms/ops/issues/1687
 - [ ] Automatically build and publish the ELF and the unikernel image.
 - [ ] Continuous deployment to DigitalOcean.
 
 ## Note on Nix
-You can use this repo without `nix` if all of the above provided by your own environment, but you will need to update the [`build.sbt`](./build.sbt).
+You can use this repo without `nix` if `qemu`, `ops`, `sbt` and `clang` installed in your environment.
+
+You'll also need to set `LLVM_BIN` and several `SCALANATIVE_*` environment variables, check the [flake.nix](./flake.nix).
 
 As for `nix` users, `cd` into the repository directory and run `nix develop` to drop into the development environment.\
 Or, if you have `direnv` installed, simply `cd` into the repository directory and do `direnv allow`.\
