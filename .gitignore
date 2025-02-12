@@ -1,0 +1,17 @@
+.bloop/
+.bsp/
+/bsp.sbt
+.classpath
+.direnv/
+.git/
+.idea/
+*.iml
+.metals/
+metals.sbt
+out/
+/outfile.json
+.project
+/result
+.scala-build/
+.settings/
+target/
