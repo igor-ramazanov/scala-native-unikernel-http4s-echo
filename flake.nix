@@ -145,7 +145,7 @@
           }
         );
 
-      # TODO: Broken at the moment, see:
+      # TODO: Broken at the moment, see: https://github.com/nanovms/ops/issues/1687
       qemu = pkgs.callPackage (pkgs.stdenv.mkDerivation {
         inherit version;
         pname = "${pname}-qemu";
