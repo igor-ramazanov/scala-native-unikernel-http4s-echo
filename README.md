@@ -22,10 +22,11 @@ The `build.sbt` points to `clang` binaries provided by the `devshell`.
 
 
 ## TODOs
-- [ ] non-Nix friendly.
-- [ ] build and package with Nix Flakes.
-- [ ] automatically build and publish the ELF and the unikernel image.
-- [ ] continuous deployment to DigitalOcean.
+- [ ] Static ELF.
+- [ ] Non-Nix friendly.
+- [ ] Build and package with Nix Flakes.
+- [ ] Automatically build and publish the ELF and the unikernel image.
+- [ ] Continuous deployment to DigitalOcean.
 
 ## Note on Nix
 You can use this repo without `nix` if all of the above provided by your own environment, but you will need to update the [`build.sbt`](./build.sbt).
