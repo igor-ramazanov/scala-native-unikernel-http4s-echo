@@ -174,6 +174,12 @@
       packages = {
         inherit server qemu;
         default = server;
+        docker = pkgs.dockerTools.buildImage {
+          name = "unikernel-scala";
+          config = {
+            Cmd = ["${server}/bin/${pname}"];
+          };
+        };
       };
     });
 }
