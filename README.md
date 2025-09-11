@@ -19,7 +19,7 @@ The Nix sets up the development environment with:
 1. `qemu`: QEMU hypervisor: https://www.qemu.org
 
 ## TODOs
-- [ ] Static ELF.
+- [x] Static ELF.
 - [x] Non-Nix friendly.
 - [ ] Build and package with Nix Flakes.
     * Running `ops` in `stdenv` is broken at the moment: https://github.com/nanovms/ops/issues/1687
@@ -43,7 +43,7 @@ Build the binary:\
 
 Now, let's use the `ops` command to run it as a QEMU virtual machine packaged as unikernel.\
 It binds to the port 80, so we'll need `sudo`:\
-`sudo ops run --port 80 ./target/scala-3.6.3/unikernel-scala-out`.
+`sudo ops run --port 80 ./target/scala-3.7.3/unikernel-scala`.
 
 
 In another terminal window:\
@@ -54,7 +54,7 @@ Hello from Scala Native NanoVM Unikernel! Your request: Request(method=GET, uri=
 ```
 
 Packaging:\
-`ops build ./target/scala-3.6.3/unikernel-scala-out`.
+`ops build ./target/scala-3.7.3/unikernel-scala`.
 
 Verify the image created:\
 `ops image list`.\
@@ -62,14 +62,14 @@ Output:
 ```
 100% |████████████████████████████████████████|  [0s:0s]
 100% |████████████████████████████████████████|  [0s:0s]
-Bootable image file:/home/igor/.ops/images/unikernel-scala-out.img
+Bootable image file:/home/igor/.ops/images/unikernel-scala.img
 ```
 
 The resulting image then can be deployed to any cloud hypervisor which uses QEMU, e.g. [DigitalOcean](https://digitalocean.com).:
 1. "Create Droplet".
 2. "Choose Image" -> "Custom Images".
 3. "Add Image".
-4. Upload your image from `~/.ops/images/unikernel-scala-out.img`.
+4. Upload your image from `~/.ops/images/unikernel-scala.img`.
 5. Wait for uploading the image and verification.
 6. On your image: "More" -> "Start Droplet".
 
@@ -109,7 +109,7 @@ instead of the traditional approach with [`coursier/setup-action`](https://githu
 
 
 ## Debugging
-Add `--verbose` and `--show-debug` flags to the `ops run ./target/scala-3.6.3/unikernel-scala-out` to see the `qemu` command:
+Add `--verbose` and `--show-debug` flags to the `ops run ./target/scala-3.7.3/unikernel-scala` to see the `qemu` command:
 ```
 qemu-system-x86_64 \
   -machine q35 \
@@ -126,7 +126,7 @@ qemu-system-x86_64 \
   -cpu host \
   -no-reboot \
   -cpu max \
-  -drive file=/root/.ops/images/unikernel-scala-out.img,format=raw,if=none,id=hd0 \
+  -drive file=/root/.ops/images/unikernel-scala.img,format=raw,if=none,id=hd0 \
   -device virtio-net,bus=pci.3,addr=0x0,netdev=n0,mac=3e:bd:d3:d8:e0:3f \
   -netdev user,id=n0,hostfwd=tcp::8080-:80 \
   -display none \

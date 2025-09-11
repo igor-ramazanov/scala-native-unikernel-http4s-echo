@@ -7,11 +7,8 @@ import com.comcast.ip4s.*
 import org.http4s.*
 import org.http4s.dsl.io.*
 import org.http4s.ember.server.*
-import org.typelevel.log4cats.*
-import org.typelevel.log4cats.noop.*
 
 object Main extends ResourceApp.Forever:
-  private given LoggerFactory[IO] = NoOpFactory[IO]
   private given Show[Request[IO]] = Show.fromToString
 
   override def run(args: List[String]): Resource[IO, Unit] = EmberServerBuilder

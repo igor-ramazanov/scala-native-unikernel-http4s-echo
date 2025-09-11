@@ -1,13 +1,15 @@
 import scala.scalanative.build._
 
+// To get a SNAPSHOT http4s
+resolvers += Resolver.sonatypeCentralSnapshots
+
 lazy val versions = new {
-  val cats       = "2.11.0" // The last version published against Scala Native 0.4.x
-  val catsEffect = "3.6.0-RC1"
-  val fs2        = "3.12.0-RC1"
-  val http4s     = "1.0.0-M44"
-  val ip4s       = "3.6.0"
-  val log4cats   = "2.7.0"
-  val scala      = "3.6.3"
+  val cats       = "2.13.0"
+  val catsEffect = "3.7.0-RC1"
+  val fs2        = "3.13.0-M7"
+  val http4s     = "0.23.30-161-f5b9629-SNAPSHOT"
+  val ip4s       = "3.8.0-RC2"
+  val scala      = "3.7.3"
 }
 
 def addCommandsAlias(name: String, commands: List[String]) = addCommandAlias(name, commands.mkString(";"))
@@ -44,9 +46,18 @@ lazy val `unikernel-scala` = project
   .settings(
     version           := java.nio.file.Files.readString(file("version").toPath()),
     organization      := "tech.igorramazanov.unikernel.scala",
-    scalacOptions     :=
-      List("-deprecation", "-feature", "-new-syntax", "-rewrite", "-unchecked", "-Wall", "-Wunused:imports"),
-    scalafixOnCompile := true,
+    scalacOptions     := List(
+      "-Wall",
+      "-Werror",
+      "-Wunused:imports",
+      "-deprecation",
+      "-feature",
+      "-indent",
+      "-new-syntax",
+      "-source:future",
+      "-unchecked",
+    ),
+    scalafixOnCompile := false,
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
     scalaVersion      := versions.scala,
@@ -56,14 +67,23 @@ lazy val `unikernel-scala` = project
       (c =>
         // The rest is managed through env vars, check flake.nix
         c.withBuildTarget(BuildTarget.application)
-          .withCheckFatalWarnings(true)
           .withCheck(true)
-          .withEmbedResources(false)
+          .withCheckFatalWarnings(true)
+          .withCheckFeatures(true)
+          .withCompileOptions("-static" :: Nil)
+          .withDump(true)
+          .withEmbedResources(true)
+          .withGC(GC.immix)
           .withIncrementalCompilation(true)
+          .withLTO(LTO.thin)
           .withLinkStubs(true)
+          .withLinkingOptions("-static" :: Nil)
+          .withMode(Mode.releaseFast)
+          .withMultithreading(true)
+          .withOptimize(true)
+          .withSourceLevelDebuggingConfig(SourceLevelDebuggingConfig.enabled)
       ),
     libraryDependencies ++= List(
-      "co.fs2"        %%% "fs2-core"            % versions.fs2,
       "co.fs2"        %%% "fs2-io"              % versions.fs2,
       "com.comcast"   %%% "ip4s-core"           % versions.ip4s,
       "org.http4s"    %%% "http4s-core"         % versions.http4s,
@@ -71,8 +91,7 @@ lazy val `unikernel-scala` = project
       "org.http4s"    %%% "http4s-ember-server" % versions.http4s,
       "org.http4s"    %%% "http4s-server"       % versions.http4s,
       "org.typelevel" %%% "cats-core"           % versions.cats,
-      "org.typelevel" %%% "cats-effect-kernel"  % versions.catsEffect,
       "org.typelevel" %%% "cats-effect"         % versions.catsEffect,
-      "org.typelevel" %%% "log4cats-core"       % versions.log4cats,
+      "org.typelevel" %%% "cats-effect-kernel"  % versions.catsEffect,
     ),
   )
