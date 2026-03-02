@@ -40,7 +40,7 @@
             (
               final: prev:
               let
-                jre = prev.graalvm-ce;
+                jre = prev.graalvmPackages.graalvm-ce;
               in
               {
                 bloop = prev.bloop.override { inherit jre; };
@@ -48,7 +48,7 @@
                 metals = prev.metals.override { inherit jre; };
                 sbt = prev.sbt.override { inherit jre; };
                 scala-cli = prev.scala-cli.override { inherit jre; };
-                scalafix = prev.scalafix.override { inherit jre; };
+                scalafix = prev.scalafix.override { jre8 = jre; };
                 scalafmt = prev.scalafmt.override { inherit jre; };
               }
             )
@@ -102,6 +102,9 @@
 
           # Required by Scala Native
           pkgs.pkgsStatic.zlib
+
+          # Required when using boehm GC
+          pkgs.pkgsStatic.boehmgc
 
           # Uncomment if needed for fs2 / http4s
           pkgs.pkgsStatic.liburing

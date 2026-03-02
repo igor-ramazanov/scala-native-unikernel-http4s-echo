@@ -1,15 +1,14 @@
 import scala.scalanative.build._
 
-// To get a SNAPSHOT http4s
-resolvers += Resolver.sonatypeCentralSnapshots
-
 lazy val versions = new {
   val cats       = "2.13.0"
-  val catsEffect = "3.7.0-RC1"
-  val fs2        = "3.13.0-M7"
-  val http4s     = "0.23.30-161-f5b9629-SNAPSHOT"
-  val ip4s       = "3.8.0-RC2"
-  val scala      = "3.7.3"
+  // cats-effect, 5d101154023e commit, locally published
+  val catsEffect = "3.7-5d10115-20260302T222504Z-SNAPSHOT"
+  val fs2        = "3.13.0-M8"
+  // http4s, 14130b66551f commit, locally published
+  val http4s     = "0.23.33-115-14130b6-20260302T222621Z-SNAPSHOT"
+  val ip4s       = "3.8.0-RC3"
+  val scala      = "3.8.2"
 }
 
 def addCommandsAlias(name: String, commands: List[String]) = addCommandAlias(name, commands.mkString(";"))
@@ -46,17 +45,8 @@ lazy val `unikernel-scala` = project
   .settings(
     version           := java.nio.file.Files.readString(file("version").toPath()),
     organization      := "tech.igorramazanov.unikernel.scala",
-    scalacOptions     := List(
-      "-Wall",
-      "-Werror",
-      "-Wunused:imports",
-      "-deprecation",
-      "-feature",
-      "-indent",
-      "-new-syntax",
-      "-source:future",
-      "-unchecked",
-    ),
+    scalacOptions     :=
+      List("-Wall", "-Werror", "-deprecation", "-feature", "-indent", "-new-syntax", "-source:future", "-unchecked"),
     scalafixOnCompile := false,
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
@@ -73,7 +63,7 @@ lazy val `unikernel-scala` = project
           .withCompileOptions("-static" :: Nil)
           .withDump(true)
           .withEmbedResources(true)
-          .withGC(GC.immix)
+          .withGC(GC.commix) // Experiment by chaning this
           .withIncrementalCompilation(true)
           .withLTO(LTO.thin)
           .withLinkStubs(true)
@@ -84,14 +74,14 @@ lazy val `unikernel-scala` = project
           .withSourceLevelDebuggingConfig(SourceLevelDebuggingConfig.enabled)
       ),
     libraryDependencies ++= List(
-      "co.fs2"        %%% "fs2-io"              % versions.fs2,
-      "com.comcast"   %%% "ip4s-core"           % versions.ip4s,
-      "org.http4s"    %%% "http4s-core"         % versions.http4s,
-      "org.http4s"    %%% "http4s-dsl"          % versions.http4s,
-      "org.http4s"    %%% "http4s-ember-server" % versions.http4s,
-      "org.http4s"    %%% "http4s-server"       % versions.http4s,
-      "org.typelevel" %%% "cats-core"           % versions.cats,
-      "org.typelevel" %%% "cats-effect"         % versions.catsEffect,
-      "org.typelevel" %%% "cats-effect-kernel"  % versions.catsEffect,
-    ),
+      "co.fs2"        %% "fs2-io"              % versions.fs2,
+      "com.comcast"   %% "ip4s-core"           % versions.ip4s,
+      "org.http4s"    %% "http4s-core"         % versions.http4s,
+      "org.http4s"    %% "http4s-dsl"          % versions.http4s,
+      "org.http4s"    %% "http4s-ember-server" % versions.http4s,
+      "org.http4s"    %% "http4s-server"       % versions.http4s,
+      "org.typelevel" %% "cats-core"           % versions.cats,
+      "org.typelevel" %% "cats-effect"         % versions.catsEffect,
+      "org.typelevel" %% "cats-effect-kernel"  % versions.catsEffect,
+    ).map(dep => dep.withName(dep.name + "_native0.5")),
   )
