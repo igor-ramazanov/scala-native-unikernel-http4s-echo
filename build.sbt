@@ -3,8 +3,8 @@ import scala.scalanative.build._
 lazy val versions = new {
   val cats       = "2.13.0"
   // cats-effect, 5d101154023e commit, locally published
-  val catsEffect = "3.7-5d10115-20260302T222504Z-SNAPSHOT"
   val fs2        = "3.13.0-M8"
+  val catsEffect = "3.7.0"
   // http4s, 14130b66551f commit, locally published
   val http4s     = "0.23.33-115-14130b6-20260302T222621Z-SNAPSHOT"
   val ip4s       = "3.8.0-RC3"
