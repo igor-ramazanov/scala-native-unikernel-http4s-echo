@@ -46,7 +46,7 @@ lazy val `unikernel-scala` = project
     version           := java.nio.file.Files.readString(file("version").toPath()),
     organization      := "tech.igorramazanov.unikernel.scala",
     scalacOptions     :=
-      List("-Wall", "-Werror", "-deprecation", "-feature", "-indent", "-new-syntax", "-source:future", "-unchecked"),
+      List("-Wall", "-Werror", "-deprecation", "-feature", "-no-indent", "-old-syntax", "-source:future", "-unchecked"),
     scalafixOnCompile := false,
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,

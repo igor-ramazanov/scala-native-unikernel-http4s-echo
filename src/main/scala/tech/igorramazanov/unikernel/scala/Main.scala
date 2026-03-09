@@ -8,7 +8,7 @@ import org.http4s.*
 import org.http4s.dsl.io.*
 import org.http4s.ember.server.*
 
-object Main extends ResourceApp.Forever:
+object Main extends ResourceApp.Forever {
   private given Show[Request[IO]] = Show.fromToString
 
   override def run(args: List[String]): Resource[IO, Unit] = EmberServerBuilder
@@ -16,11 +16,14 @@ object Main extends ResourceApp.Forever:
     .withHost(host"0.0.0.0")
     .withPort(port"80")
     .withHttp2
-    .withHttpApp:
+    .withHttpApp(
       HttpRoutes
-        .of[IO]: req =>
-          Ok:
-            show"Hello from Scala Native NanoVM Unikernel! Your request: $req"
+        .of[IO](req =>
+          Ok(show"Hello from Scala Native NanoVM Unikernel! Your request: $req")
+        )
         .orNotFound
+    )
     .build
     .void
+
+}
