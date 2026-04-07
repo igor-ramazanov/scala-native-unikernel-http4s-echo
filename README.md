@@ -73,7 +73,10 @@ The resulting image then can be deployed to any cloud hypervisor which uses QEMU
 5. Wait for uploading the image and verification.
 6. On your image: "More" -> "Start Droplet".
 
-The app is currently deployed as [`http://unikernel.igorramazanov.tech`](http://unikernel.igorramazanov.tech) (you can simply open it in the browser):
+~~The app is currently deployed as [`http://unikernel.igorramazanov.tech`](http://unikernel.igorramazanov.tech) (you can simply open it in the browser):~~
+
+(Decided not to run an instance to save some $ and simplify my projects)
+
 ```
 curl -v http://unikernel.igorramazanov.tech
 

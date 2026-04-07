@@ -7,7 +7,7 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     sbt-derivation = {
       url = "github:zaninime/sbt-derivation";
@@ -76,7 +76,7 @@
         # TODO: Not sure if necessary.
         # I think it should be possible to use `clang-unwrapped` and provide necessary libraries manually.
         # Compiling `clang` takes a lot of time.
-        llvm = pkgs.pkgsMusl.llvmPackages_20;
+        llvm = pkgs.pkgsMusl.llvmPackages_22;
 
         scalaTools = [
           pkgs.bloop
