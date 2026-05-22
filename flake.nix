@@ -137,7 +137,7 @@
                 # https://github.com/scala-native/scala-native/blob/691cf35751de7edf9dc7d183dd87a83b23558360/tools/src/main/scala/scala/scalanative/build/Discover.scala#L204
                 nativeBuildInputs = [ pkgs.which ];
                 src = self;
-                depsSha256 = "sha256-2zn9YZbfZLTqtoSsf0gI+VLoPwBBZabP98LXscOemyk=";
+                depsSha256 = "sha256-mp3wsI5djWBFEQa3RqYFogI+rMUVe2sP2l2nmQM8qWo=";
                 buildPhase = ''
                   sbt nativeLink
                 '';
